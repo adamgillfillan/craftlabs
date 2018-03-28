@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const User = require("./server/models/user");
+const users = require("./server/users/index");
 const app = express();
 
 mongoose.connect("mongodb://localhost:27017/craftlabs");
@@ -23,34 +23,7 @@ app.use(cors());
 // create middleware to handle the serving the app
 app.use("/", serveStatic(path.join(__dirname, "/dist")));
 
-// Fetch all users
-app.get("/v1/users", (req, res) => {
-  User.find({}, "username shop_name shop_id", (error, users) => {
-    if (error) {
-      console.error(error);
-    }
-    res.send({ users });
-  }).sort({ _id: -1 });
-});
-
-app.post("/v1/users", (req, res) => {
-  const { username, shop_name, shop_id } = req.body;
-  const newUser = new User({
-    username,
-    shop_name,
-    shop_id
-  });
-
-  newUser.save(function(error) {
-    if (error) {
-      console.log(error);
-    }
-    res.send({
-      success: true,
-      message: "User saved successfully!"
-    });
-  });
-});
+app.use(users);
 
 // Catch all routes and redirect to the index file
 app.get("*", (req, res) => {
