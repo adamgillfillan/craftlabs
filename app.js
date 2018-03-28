@@ -8,13 +8,16 @@ const mongoose = require("mongoose");
 const users = require("./server/users/index");
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/craftlabs");
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error"));
-db.once("open", callback => {
-  console.log("Connection Succeeded");
-});
+// mongoose.connect("mongodb://localhost:27017/craftlabs");
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/craftlabs';
+mongoose.connect(uri).then(
+  () => {
+    console.log('Succeeded connected to: ' + uri);
+  },
+  (err) => {
+    console.log('ERROR connecting to: ' + uri + '. ' + err);
+  }
+);
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
