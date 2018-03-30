@@ -5,11 +5,15 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const users = require("./server/users/index");
-const app = express();
+const index = require("./server/routes/index");
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-// mongoose.connect("mongodb://localhost:27017/craftlabs");
+
+const app = express();
+const port = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/craftlabs';
+
 mongoose.connect(uri).then(
   () => {
     console.log('Succeeded connected to: ' + uri);
@@ -23,19 +27,28 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // create middleware to handle the serving the app
 app.use("/", serveStatic(path.join(__dirname, "/dist")));
 
-app.use(users);
+app.use(index);
+
+const User = require('./server/models/user');
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // Catch all routes and redirect to the index file
 app.get("*", (req, res) => {
   res.sendFile(`${__dirname}/dist/index.html`);
 });
 
-// Create default port to serve the app on
-const port = process.env.PORT || 5000;
-
 app.listen(port);
-// Log to feedback that this is actually running
 console.log(`Server started on port ${port}`);
