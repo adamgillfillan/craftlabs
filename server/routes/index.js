@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console,no-underscore-dangle */
 const express = require('express');
 const passport = require('passport');
 const User = require('../models/user');
@@ -17,6 +17,10 @@ app.post('/v1/register', (req, res) => {
     passport.authenticate('local')(req, res, () => {
       console.log('registering user: ', user);
       res.send({
+        user: {
+          id: req.user._id,
+          username: req.user.username,
+        },
         success: true,
         message: 'User registered successfully!',
       });
@@ -26,6 +30,10 @@ app.post('/v1/register', (req, res) => {
 
 app.post('/v1/login', passport.authenticate('local'), (req, res) => {
   res.send({
+    user: {
+      id: req.user._id,
+      username: req.user.username,
+    },
     success: true,
     message: 'User logged in successfully!',
   });

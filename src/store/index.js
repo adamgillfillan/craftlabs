@@ -20,8 +20,8 @@ export const store = new Vuex.Store({
         username: payload.username,
         password: payload.password,
       })
-        .then((user) => {
-          commit('setUser', user);
+        .then((res) => {
+          commit('setUser', res.data.user.id);
         })
         .catch((err) => {
           console.error('err: ', err);
@@ -32,8 +32,8 @@ export const store = new Vuex.Store({
         username: payload.username,
         password: payload.password,
       })
-        .then((user) => {
-          commit('setUser', user);
+        .then((res) => {
+          commit('setUser', res.data.user.id);
         })
         .catch((err) => {
           console.error('err: ', err);
