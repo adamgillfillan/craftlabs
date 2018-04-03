@@ -43,13 +43,25 @@ export default {
   data() {
     return {
       sideNav: false,
-      menuItems: [
-        { icon: 'store', title: 'View Store', link: '/store' },
-        { icon: 'person', title: 'Profile', link: '/profile' },
+    };
+  },
+  computed: {
+    menuItems() {
+      let menuItems = [
         { icon: 'face', title: 'Register', link: '/register' },
         { icon: 'lock_open', title: 'Login', link: '/login' },
-      ],
-    };
+      ];
+      if (this.userIsAuthenticated) {
+        menuItems = [
+          { icon: 'store', title: 'View Store', link: '/store' },
+          { icon: 'person', title: 'Profile', link: '/profile' },
+        ];
+      }
+      return menuItems;
+    },
+    userIsAuthenticated() {
+      return !!this.$store.getters.user;
+    },
   },
 };
 </script>

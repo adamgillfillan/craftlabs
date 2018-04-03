@@ -33,7 +33,10 @@ app.post('/v1/login', passport.authenticate('local'), (req, res) => {
 
 app.get('/v1/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.send({
+    success: true,
+    message: 'User logged out successfully!',
+  });
 });
 
 
