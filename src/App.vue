@@ -53,6 +53,7 @@ export default {
       ];
       if (this.userIsAuthenticated) {
         menuItems = [
+          { icon: 'lock', title: 'Logout', link: '/logout' },
           { icon: 'store', title: 'View Store', link: '/store' },
           { icon: 'person', title: 'Profile', link: '/profile' },
         ];

@@ -51,7 +51,6 @@ export default {
   name: 'Login',
   data() {
     return {
-      msg: 'Login brah',
       username: '',
       password: '',
       confirmPassword: '',

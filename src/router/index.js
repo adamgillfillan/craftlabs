@@ -4,6 +4,7 @@ import Home from '../components/Home';
 import Register from '../components/User/Register';
 import Login from '../components/User/Login';
 import Profile from '../components/User/Profile';
+import Logout from '../components/User/Logout';
 import Store from '../components/Store/Store';
 
 Vue.use(Router);
@@ -30,6 +31,11 @@ export default new Router({
       path: '/profile',
       name: 'Profile',
       component: Profile,
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: Logout,
     },
     {
       path: '/store',

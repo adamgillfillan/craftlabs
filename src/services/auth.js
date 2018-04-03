@@ -7,4 +7,7 @@ export default {
   login(params) {
     return Api().post('login', params);
   },
+  logout() {
+    return Api().get('logout');
+  },
 };

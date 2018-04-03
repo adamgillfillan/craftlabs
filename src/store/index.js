@@ -13,6 +13,10 @@ export const store = new Vuex.Store({
     setUser(state, payload) {
       state.user = payload;
     },
+    logout(state) {
+      console.log('setting user state to null');
+      state.user = null;
+    },
   },
   actions: {
     signUserUp({ commit }, payload) {
@@ -34,6 +38,15 @@ export const store = new Vuex.Store({
       })
         .then((res) => {
           commit('setUser', res.data.user.id);
+        })
+        .catch((err) => {
+          console.error('err: ', err);
+        });
+    },
+    logout({ commit }) {
+      auth.logout()
+        .then(() => {
+          commit('logout');
         })
         .catch((err) => {
           console.error('err: ', err);
