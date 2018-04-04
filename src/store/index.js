@@ -2,20 +2,25 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from '../services/auth';
+// import shop from '../services/shop';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
     user: null,
+    shop: null,
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload;
     },
     logout(state) {
-      console.log('setting user state to null');
       state.user = null;
+    },
+    setShop(state, payload) {
+      console.log('setting store to: ', payload);
+      state.store = payload;
     },
   },
   actions: {
@@ -52,10 +57,19 @@ export const store = new Vuex.Store({
           console.error('err: ', err);
         });
     },
+    logUserIn({ commit }, id) {
+      commit('setUser', id);
+    },
+    // addShop({ commit }, payload) {
+    //
+    // },
   },
   getters: {
     user(state) {
       return state.user;
+    },
+    shop(state) {
+      return state.shop;
     },
   },
 });

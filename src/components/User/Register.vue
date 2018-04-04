@@ -79,7 +79,7 @@ export default {
   watch: {
     user(value) {
       if (value !== null && value !== undefined) {
-        this.$router.push({ name: 'Store' });
+        this.$router.push({ name: 'Shop' });
       }
     },
   },

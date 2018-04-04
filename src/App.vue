@@ -39,7 +39,20 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
+import auth from './services/auth';
+
 export default {
+  async beforeCreate() {
+    try {
+      const user = await auth.getUser();
+      if (user.data.user) {
+        this.$store.dispatch('logUserIn', user.data.user.id);
+      }
+    } catch (err) {
+      console.error('error', err);
+    }
+  },
   data() {
     return {
       sideNav: false,
@@ -53,9 +66,9 @@ export default {
       ];
       if (this.userIsAuthenticated) {
         menuItems = [
-          { icon: 'lock', title: 'Logout', link: '/logout' },
-          { icon: 'store', title: 'View Store', link: '/store' },
+          { icon: 'store', title: 'View Shop', link: '/shop' },
           { icon: 'person', title: 'Profile', link: '/profile' },
+          { icon: 'lock', link: '/logout' },
         ];
       }
       return menuItems;

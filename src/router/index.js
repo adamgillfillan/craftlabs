@@ -5,7 +5,7 @@ import Register from '../components/User/Register';
 import Login from '../components/User/Login';
 import Profile from '../components/User/Profile';
 import Logout from '../components/User/Logout';
-import Store from '../components/Store/Store';
+import Shop from '../components/Shop/Shop';
 
 Vue.use(Router);
 
@@ -38,9 +38,9 @@ export default new Router({
       component: Logout,
     },
     {
-      path: '/store',
-      name: 'Store',
-      component: Store,
+      path: '/shop',
+      name: 'Shop',
+      component: Shop,
     },
   ],
 });

@@ -10,4 +10,7 @@ export default {
   logout() {
     return Api().get('logout');
   },
+  getUser() {
+    return Api().get('user');
+  },
 };
