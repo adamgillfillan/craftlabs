@@ -29,6 +29,18 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <v-layout row v-if="shop">
+      <v-flex xs10 offset-xs1>
+        Welcome to your store!
+        <!--<v-card>-->
+          <!--<v-card-text>-->
+            <!--<v-container>-->
+              <!--Welcome to your store!-->
+            <!--</v-container>-->
+          <!--</v-card-text>-->
+        <!--</v-card>-->
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
