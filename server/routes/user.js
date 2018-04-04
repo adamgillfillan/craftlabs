@@ -8,32 +8,30 @@ module.exports = app;
 
 // Create a new user
 app.post('/v1/register', (req, res) => {
-  User.register(new User({ username: req.body.username }), req.body.password, (err, user) => {
+  User.register(new User({ username: req.body.username }), req.body.password, (err) => {
     if (err) {
       return res.status(409).send(err);
     }
 
     passport.authenticate('local')(req, res, () => {
-      res.send({
-        user: {
-          id: req.user._id,
-          username: req.user.username,
-        },
-        success: true,
-        message: 'User registered successfully!',
+      User.findById(req.user._id, (error, user) => {
+        if (error) {
+          res.send({ error });
+        }
+
+        res.send(user);
       });
     });
   });
 });
 
 app.post('/v1/login', passport.authenticate('local'), (req, res) => {
-  res.send({
-    user: {
-      id: req.user._id,
-      username: req.user.username,
-    },
-    success: true,
-    message: 'User logged in successfully!',
+  User.findById(req.user._id, (error, user) => {
+    if (error) {
+      res.send({ error });
+    }
+
+    res.send(user);
   });
 });
 
@@ -47,13 +45,12 @@ app.get('/v1/logout', (req, res) => {
 
 app.get('/v1/user', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send({
-      user: {
-        id: req.user._id,
-        username: req.user.username,
-      },
-      success: true,
-      message: 'User logged in successfully!',
+    User.findById(req.user._id, (error, user) => {
+      if (error) {
+        res.send({ error });
+      }
+
+      res.send(user);
     });
   } else {
     res.send({

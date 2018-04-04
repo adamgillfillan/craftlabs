@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import auth from '../services/auth';
-// import shop from '../services/shop';
+import Auth from '../services/auth';
+import Shop from '../services/shop';
 
 Vue.use(Vuex);
 
@@ -18,58 +18,64 @@ export const store = new Vuex.Store({
     logout(state) {
       state.user = null;
     },
-    setShop(state, payload) {
-      console.log('setting store to: ', payload);
-      state.store = payload;
-    },
   },
   actions: {
-    signUserUp({ commit }, payload) {
-      auth.register({
-        username: payload.username,
-        password: payload.password,
-      })
-        .then((res) => {
-          commit('setUser', res.data.user.id);
-        })
-        .catch((err) => {
-          console.error('err: ', err);
+    async signUserUp({ commit }, payload) {
+      try {
+        const user = await Auth.register({
+          username: payload.username,
+          password: payload.password,
         });
+        if (user) {
+          commit('setUser', user.data);
+        }
+      } catch (err) {
+        console.error('error', err);
+      }
     },
-    signUserIn({ commit }, payload) {
-      auth.login({
-        username: payload.username,
-        password: payload.password,
-      })
-        .then((res) => {
-          commit('setUser', res.data.user.id);
-        })
-        .catch((err) => {
-          console.error('err: ', err);
+    async signUserIn({ commit }, payload) {
+      try {
+        const user = await Auth.login({
+          username: payload.username,
+          password: payload.password,
         });
+        if (user) {
+          commit('setUser', user.data);
+        }
+      } catch (err) {
+        console.error('error', err);
+      }
     },
-    logout({ commit }) {
-      auth.logout()
-        .then(() => {
+    async logout({ commit }) {
+      try {
+        const res = await Auth.logout();
+        if (res) {
           commit('logout');
-        })
-        .catch((err) => {
-          console.error('err: ', err);
-        });
+        }
+      } catch (err) {
+        console.error('error', err);
+      }
     },
-    logUserIn({ commit }, id) {
-      commit('setUser', id);
+    logUserIn({ commit }, user) {
+      commit('setUser', user);
     },
-    // addShop({ commit }, payload) {
-    //
-    // },
+    async addShop({ commit }, shopName) {
+      try {
+        const user = await Shop.addShop(shopName);
+        if (user) {
+          commit('setUser', user.data);
+        }
+      } catch (err) {
+        console.error('error', err);
+      }
+    },
   },
   getters: {
     user(state) {
       return state.user;
     },
     shop(state) {
-      return state.shop;
+      return state.user ? state.user.shopName : null;
     },
   },
 });

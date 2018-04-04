@@ -39,15 +39,17 @@
 </template>
 
 <script>
-/* eslint-disable no-console */
+/* eslint-disable no-console,no-underscore-dangle */
 import auth from './services/auth';
 
 export default {
   async beforeCreate() {
     try {
       const user = await auth.getUser();
-      if (user.data.user) {
-        this.$store.dispatch('logUserIn', user.data.user.id);
+      if (user.data._id) {
+        this.$store.dispatch('logUserIn', user.data);
+      } else {
+        this.$router.push({ name: 'Home' });
       }
     } catch (err) {
       console.error('error', err);

@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    <v-layout row v-if="!hasShop">
+    <v-layout row v-if="!shop">
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
           <v-card-text>
             <v-container>
-              <form @submit.prevent="login">
+              <form @submit.prevent="addShop">
                 <v-layout row>
                   <v-flex xs12>
                     <v-text-field
@@ -33,24 +33,18 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
+
 export default {
   name: 'Shop',
   data() {
     return {
       shopName: '',
-      hasShop: false,
     };
   },
   computed: {
     shop() {
       return this.$store.getters.shop;
-    },
-  },
-  watch: {
-    shop(value) {
-      if (value !== null && value !== undefined) {
-        this.hasShop = true;
-      }
     },
   },
   methods: {
@@ -60,7 +54,3 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
